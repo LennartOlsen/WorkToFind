@@ -10,6 +10,7 @@
       <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
     </ul>
     <h2>Ecosystem</h2>
+    <login-component></login-component>
     <ul>
       <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
       <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
@@ -20,8 +21,12 @@
 </template>
 
 <script>
+import loginComponent from './components/login'
 export default {
   name: 'app',
+  components : {
+    loginComponent
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
