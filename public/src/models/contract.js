@@ -1,19 +1,19 @@
 //@ts-check
 
 export default class Contract {
-    constructor(id, 
+    constructor(id,
+        uid, 
         description = '', 
-        uid = null, 
         employee = null,
         hours = null,
         updateTime = null,
         deleteTime = null){
             
             if(id == null){
-                throw "Contract initialized with no uid"
+                throw "Contract initialized with no id"
             }
             if(uid == null){
-                throw "Contract initialized with no owner"
+                throw "Contract initialized with no uid"
             }
             this.id = id
             this.uid = uid
