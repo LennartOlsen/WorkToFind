@@ -1,11 +1,11 @@
 <template>
-    <h1>Hello Tasks</h1>
+    <h1>Hello Contracts</h1>
 </template>
 
 <script>
 import * as settings from '../../settings'
 export default {
-    name : 'tasks-component',
+    name : 'contracts-component',
     data : {
         profile : null
     },
