@@ -55,22 +55,22 @@ class Contracts extends BaseRepository {
 
     /**
      * Updates given value at existing location
-     * @param {string} propertyId
+     * @param {string} id
      * @param {Contract} entity
      * @returns {Promise<any>}
      */
-    update(uid, entity){
+    update(id, entity){
         this.removeEmpty(entity)
         entity.updateTime = Date.now()
-        if(!uid || uid == ''){
-            throw("No uid when updating profiles are not allowed")
+        if(!id || id == ''){
+            throw("No id when updating contracts are not allowed")
         }
-        return this.getReference(uid).update(entity)
+        return this.getReference(id).update(entity)
     }
 }
 
 
-const instance = new Profiles
+const instance = new Contracts
 
 Object.freeze(instance)
 
