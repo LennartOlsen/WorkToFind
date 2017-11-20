@@ -1,9 +1,4 @@
 //@ts-check
-/*export const TYPES = {
-    EMPLOYEE : 'employee',
-    CONTRACTOR : 'contractor',
-    BOTH : 'both'
-}*/
 
 export default class Contract {
     constructor(id,
@@ -13,11 +8,12 @@ export default class Contract {
         hours = null,
         updateTime = null,
         deleteTime = null){
+            
             if(id == null){
                 throw "Contract initialized with no id"
             }
             if(uid == null){
-                throw "Contract initialized with no owner"
+                throw "Contract initialized with no uid"
             }
             this.id = id
             this.uid = uid
