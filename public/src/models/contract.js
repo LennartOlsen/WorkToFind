@@ -6,21 +6,21 @@
 }*/
 
 export default class Contract {
-    constructor(id, 
+    constructor(id,
+        uid, 
         description = '', 
-        contractor = null, 
         employee = null,
         hours = null,
         updateTime = null,
         deleteTime = null){
             if(id == null){
-                throw "Contract initialized with no uid"
+                throw "Contract initialized with no id"
             }
-            if(contractor == null){
+            if(uid == null){
                 throw "Contract initialized with no owner"
             }
             this.id = id
-            this.contractor = contractor
+            this.uid = uid
             this.employee = employee
             this.hours = hours
 
