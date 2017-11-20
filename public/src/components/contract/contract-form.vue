@@ -58,8 +58,6 @@ export default {
                     console.log("Contract updated/created")
                 }
             })
-
-            console.log("hej", this.model)
         }
     }
 }
