@@ -1,10 +1,9 @@
 import VueRouter from 'vue-router'
 
-import tasksComponent from './components/tasks.vue'
+import tasksContainer from './components/tasks/task-container.vue'
 
 const routes = [
-    {path : "/tasks", component : tasksComponent},
-    {path : '*', component : tasksComponent}
+    {path : '*', component : tasksContainer}
 ]
 
 export default new VueRouter({mode:"history", routes})

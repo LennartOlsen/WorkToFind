@@ -31,7 +31,6 @@ export default {
 		settings.getFirebase().auth().onAuthStateChanged(function(user) {
 			_this.ready = true
 			if (user) {
-				console.log("User", user)
 				_this.user = user
 				_this.loggedIn = true
 			} else {

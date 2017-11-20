@@ -5,10 +5,12 @@
                 some sidebar
             </b-col>
             <b-col cols="10">
-                <router-view v-if="profile && !profile.isPristine()"></router-view>
+                <router-view v-if="profile && !profile.isPristine()">
+                </router-view>
                 <template v-if="profile && profile.isPristine()">
                     <h2>Please update your profile to carry on</h2>
-                    <profile-form-component :profile="profile" @updated="updatedProfile">
+                    <profile-form-component :profile="profile" 
+                                            @updated="updatedProfile">
                     </profile-form-component>
                 </template>
             </b-col>
@@ -33,12 +35,14 @@ export default {
     mounted : function(){
         let _this = this
         ProfileStore.get(this.user.uid).then( profile => {
+            _this.profileCallback(profile)
             _this.profile = profile
         })
     },
     methods : {
+        profileCallback(profile){
+        },
         updatedProfile(profile){
-            console.log(profile)
             this.profile = profile
             this.$set(this.profile, profile)
         }

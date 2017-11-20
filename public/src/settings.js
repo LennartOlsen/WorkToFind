@@ -16,3 +16,7 @@ export function getFirebase(){
     }
     return firebase
 }
+
+export function getCurrentUser() {
+    return getFirebase().auth().currentUser
+}
