@@ -25,7 +25,7 @@ export default class Contract {
     }
 
     static fromFirebase(fb){
-        let entity = new Contract(fb.id)
+        let entity = new Contract(fb.id, fb.uid)
         for(var key in fb){
             if(fb.hasOwnProperty(key)){
                     entity[key] = fb[key]

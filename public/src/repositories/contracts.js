@@ -29,6 +29,7 @@ class Contracts extends BaseRepository {
      */
     unwrap(promise){
         return promise.then(snap => {
+            console.log(snap.val())
             if(snap.exists()){
                 return Contract.fromFirebase(snap.val())
             }
