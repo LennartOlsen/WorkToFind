@@ -2,18 +2,10 @@
     <b-container fluid>
         <b-row>
             <b-col>
-            	<b-list-group>
-  					<b-list-group-item active>
-    					Awesome list
-  					</b-list-group-item>
-  				<b-list-group-item href="#">
-    					Action links are easy
-  				</b-list-group-item>
-  				<b-list-group-item>
-   						 This is a text only item
-  				</b-list-group-item>
-				</b-list-group>
-            </b-col>
+            	<ul class="todo-list">
+					<li>dsd</li>
+				</ul>
+			</b-col>
         </b-row>
     </b-container>
 </template>
@@ -24,7 +16,10 @@ export default {
 	data : function() {
         return {
         }
-    }
+	},
+	mounted : function() {
+		console.log("i am here")
+	}
 }
 </script>
 
