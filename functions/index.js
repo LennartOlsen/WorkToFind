@@ -1,8 +1,20 @@
+//@ts-check
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+/** Firebase DB init */
+admin.initializeApp(functions.config().firebase);
+
+
+exports.createProfileInDB = functions.auth.user().onCreate(event => {
+    let profile = {}
+    profile.uid = event.data.uid
+    profile.displayName = event.data.displayName
+    admin.database().ref("profiles").child(profile.uid).set(profile,(error) => {
+        if(error){
+            console.log(error)
+        } else {
+            console.log("User created", profile.displayName)
+        }
+    })
+});
