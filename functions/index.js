@@ -10,7 +10,8 @@ exports.createProfileInDB = functions.auth.user().onCreate(event => {
     let profile = {}
     profile.uid = event.data.uid
     profile.displayName = event.data.displayName
-    admin.database().ref("profiles").child(profile.uid).set(profile,(error) => {
+    profile.photoURL = event.data.photoURL
+    return admin.database().ref("profiles").child(profile.uid).set(profile,(error) => {
         if(error){
             console.log(error)
         } else {

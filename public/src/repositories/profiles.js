@@ -23,12 +23,25 @@ class Profiles extends BaseRepository {
     }
 
     /**
+     * Get without id, returns all with ID returns just the one
+     * @param {string} id The ID of the profile you want
+     * @returns {Promise<Contract>} the promise, make sure to handle errors
+     */
+    watchOnce(id=null){
+        if(!id){
+            return this.unwrapList(super.getReference().once('child_added'))
+        }
+        return this.unwrap(super.getReference(id).once('child_added'))
+    }
+    
+    /**
      * 
      * @param {Promise<any>} promise 
      * @returns {Promise<Profile>} 
      */
     unwrap(promise){
         return promise.then(snap => {
+            console.log(snap)
             if(snap.exists()){
                 return Profile.fromFirebase(snap.val())
             }
@@ -42,8 +55,8 @@ class Profiles extends BaseRepository {
      * @returns {Promise<any>}
      */
     update(uid, entity){
-        this.removeEmpty(entity)
         entity.updateTime = Date.now()
+        this.removeEmpty(entity)
         if(!uid || uid == ''){
             throw("No uid when updating profiles are not allowed")
         }

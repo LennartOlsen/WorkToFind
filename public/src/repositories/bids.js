@@ -2,10 +2,9 @@ import BaseRepository from "./base";
 import Contract from "../models/contract";
 
 //@ts-check
+const KEY = "bids"
 
-const KEY = "contracts"
-
-class Contracts extends BaseRepository {
+class Bids extends BaseRepository {
     constructor(){
         super(KEY)
     }
@@ -29,7 +28,6 @@ class Contracts extends BaseRepository {
      */
     unwrap(promise){
         return promise.then(snap => {
-            console.log(snap.val())
             if(snap.exists()){
                 return Contract.fromFirebase(snap.val())
             }
@@ -61,8 +59,8 @@ class Contracts extends BaseRepository {
      * @returns {Promise<any>}
      */
     update(id, entity){
-        entity.updateTime = Date.now()
         this.removeEmpty(entity)
+        entity.updateTime = Date.now()
         if(!id || id == ''){
             throw("No id when updating contracts are not allowed")
         }
@@ -71,7 +69,7 @@ class Contracts extends BaseRepository {
 }
 
 
-const instance = new Contracts
+const instance = new Bids
 
 Object.freeze(instance)
 

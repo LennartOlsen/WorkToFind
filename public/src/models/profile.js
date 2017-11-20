@@ -11,7 +11,8 @@ export const TYPES = {
 
 export default class Profile {
     constructor(uid, 
-        displayName = '', 
+        displayName = '',
+        photoURL = null,
         type = null, 
         state = null,
         updateTime = null,
@@ -22,6 +23,7 @@ export default class Profile {
             this.uid = uid
 
             this.displayName = displayName
+            this.photoURL = photoURL
             this.type = type
             this.state = state
             this.updateTime = updateTime
@@ -36,6 +38,10 @@ export default class Profile {
             }
         }
         return entity
+    }
+
+    isValid(){
+        return this.type != null
     }
 
     isPristine(){
