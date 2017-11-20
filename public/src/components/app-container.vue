@@ -35,7 +35,13 @@ export default {
     mounted : function(){
         let _this = this
         ProfileStore.get(this.user.uid).then( profile => {
-            _this.profileCallback(profile)
+            console.log("Got Profile ", profile)
+            if(profile == null){
+                ProfileStore.watchOnce(_this.user.uid).then(profile => {
+                    console.log("watchOnce Profile ", profile)
+                    _this.profile = profile
+                })
+            }
             _this.profile = profile
         })
     },
