@@ -32,6 +32,8 @@
 import Contract from '../../models/contract'
 import * as helpers from '../../helpers'
 import * as settings from '../../settings'
+import store from '../../repositories/contracts'
+
 export default {
     name: 'contract-form',
     props: ["contract"],
@@ -49,7 +51,13 @@ export default {
     },
     methods: {
         submitContract(){
-            console.log("hej", this.model)
+            store.update(this.model.id, this.model).then(error => {
+                if(error){
+                    console.log(error)
+                } else {
+                    console.log("Contract updated/created")
+                }
+            })
         }
     }
 }

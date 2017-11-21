@@ -13,6 +13,8 @@
 import * as firebase from 'firebase'
 import firebaseui from 'firebaseui'
 import * as FirebaseProvider from '../settings'
+import Profile from '../models/profile'
+import ProfileStore from '../repositories/profiles'
 
 export default {
     name : 'login-component',
@@ -22,6 +24,7 @@ export default {
     },
     mounted() {
         let firebaseApp = FirebaseProvider.getFirebase()
+        let _this = this
         let uiConfig = {
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -41,7 +44,8 @@ export default {
         }
         this.$root.ui.start('#firebaseui-auth-container', uiConfig);
     },
-    methods : {}
+    methods : {
+    }
 }
 </script>
 
