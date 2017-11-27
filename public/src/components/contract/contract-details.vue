@@ -17,7 +17,8 @@
         <b-row v-if="contract.currentBid">
             <b-col>
 				<h3>Current Bid</h3>
-                {{contract.currentBid}}
+                {{contract.currentBid.value}}
+                <span v-if="contract.currentBid && contract.currentBid.profile"> {{contract.currentBid.profile.displayName}} </span>
             </b-col>
         </b-row>
 
@@ -25,7 +26,8 @@
             <b-col>
 				<b-list-group v-if="bidList">
 					<b-list-group-item v-for="bid in bidList" :key="bid.id">
-                        {{bid.value}} - by {{bid.uid}}
+                        {{bid.value}} - by
+                        <span v-if="contract.currentBid && contract.currentBid.profile"> {{contract.currentBid.profile.displayName}} </span>
 					</b-list-group-item>
 				</b-list-group>
             </b-col>

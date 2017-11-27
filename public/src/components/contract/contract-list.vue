@@ -16,7 +16,7 @@
 									<b-col><span class="boldie">Date </span><br/>{{contract.date}}</b-col>
 									<b-col><span class="boldie">Max Price </span><br/>{{contract.maxPrice}}</b-col>
 									<b-col><span class="boldie">Current Bid </span><br/><span v-if="contract.currentBid">{{contract.currentBid.value}}</span></b-col>
-									<b-col><span class="boldie">Winner </span><br/>{{contract.winner}}</b-col>
+									<b-col><span class="boldie">Winner </span><br/><span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-col>
 								</b-row>
 							</b-col>
 							<b-col cols="2">
@@ -56,13 +56,13 @@ export default {
         return {
 			contractList: null,
 			error : [],
-			profileName: {}
+			profileName: {},
+			profile : null
         }
 	},
 	mounted : function() {
 		ContractStore.get(null).then( contractList => {
 			this.contractList = contractList;
-
 			this.contractList.forEach(contract => {
 				Profiles.get(contract.uid).then( profile => {
 					this.$set(this.profileName, contract.uid ,profile.displayName);
@@ -73,6 +73,9 @@ export default {
 		ContractStore.Subscribe( (snap, prevChildKey) => {
 			this.updateContract(snap)
 		}, null, "child_changed")
+		Profiles.get(Settings.getCurrentUser().uid).then( profile => {
+			this.profile = profile
+		})
 	},
 	methods : {
 		doBid(contract){
@@ -85,7 +88,10 @@ export default {
 				Settings.getCurrentUser().uid, 
 				contract.id,
 				STATES.NEW,
-				contract.nextBid)
+				contract.nextBid,
+				null,
+				null,
+				this.profile)
 
 			contract.pushBid(b)
 
