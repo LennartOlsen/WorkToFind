@@ -25,7 +25,7 @@ class Profiles extends BaseRepository {
     /**
      * Get without id, returns all with ID returns just the one
      * @param {string} id The ID of the profile you want
-     * @returns {Promise<Contract>} the promise, make sure to handle errors
+     * @returns {Promise<Profile>} the promise, make sure to handle errors
      */
     watchOnce(id=null){
         if(!id){
