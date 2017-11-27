@@ -52,9 +52,6 @@ import * as Settings from '../../settings'
 // import * as settings from '../../settings'
 export default {
 	name : 'contract-list-component',
-	components : {
-        Rating
-    },
 	data : function() {
         return {
 			contractList: null,
