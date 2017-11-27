@@ -1,10 +1,10 @@
 <template>
     <b-container fluid>
-        <b-row>
-            <h3 v-if="profile.averageRating != null">Average rating: {{ profile.averageRating }}</h3>
-            <h3 v-if="profile.averageRating == null">Average rating: 0</h3>
+        <b-row v-if="profile && rate == false">
+            <h3 v-if="profile.averageRating != null">Average rating: <img src="../../assets/star.png" />{{ profile.averageRating }}</h3>
+            <h3 v-if="profile.averageRating == null">Average rating: <img src="../../assets/star.png" />0</h3>
         </b-row>
-        <b-row v-if="null == !null">
+        <b-row v-if="rate == true">
             <div id="star-rating">
                 <img src="../../assets/star.png" @click="addRatingToUser(1)" />
                 <img src="../../assets/star.png" @click="addRatingToUser(2)" />
@@ -23,7 +23,7 @@ import store from '../../repositories/profiles'
 
 export default {
     name: 'rating',
-    props: ['uid'],
+    props: ['uid', 'rate'],
     data: function(){ 
         return {
             profile: null
@@ -32,7 +32,6 @@ export default {
     mounted: function(){
         store.get(this.uid).then(profile => {
                     this.profile = profile
-                    console.log(profile)
                 })
     },
     methods: {
