@@ -16,14 +16,11 @@ export default {
             profile:null
         }
     },
-    monuted : function() {
-        console.log(settings.getCurrentUser())
-    },
+    monuted : function() {},
     components: {
         contractListComponet
     }, 
-    methods : {
-    }
+    methods : {}
 }
 </script>
 

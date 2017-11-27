@@ -11,29 +11,7 @@
         </b-row>
         
         <b-row v-if="edits">
-            <b-col>
-                <form>
-                    <b-form-group
-                    id="fieldset1"
-                    description="Describe the contract."
-                    label="Describe the contract">
-                        <b-form-textarea id="textarea1"
-                            v-model="contract.description"
-                            text="contract.description"
-                            :rows="3"
-                            :max-rows="6">
-                        </b-form-textarea>
-                    </b-form-group>
-                    <b-form-group
-                    id="fieldset2"
-                    description="Number of hours to complete contract."
-                    label="Number of hours">
-                        <b-form-input id="input2" v-model.number="contract.hours" type="number" >{{ contract.hours }}</b-form-input>
-                    </b-form-group>
-                
-                    <b-button variant="primary"  @click='submitContract'>Submit</b-button>
-                </form>
-            </b-col>
+            <contract-form :contract="contract"></contract-form>
         </b-row>
     </b-container>
 </template>
@@ -42,9 +20,14 @@
 import ContractStore from '../../repositories/contracts'
 import * as settings from '../../settings'
 import store from '../../repositories/contracts'
+import ContractForm from './contract-form.vue'
+
 export default {
     name : 'contract-details-component',
     props : ['id'],
+    components : {
+        ContractForm
+    },
     data : function() {
         return {
             contract : null,

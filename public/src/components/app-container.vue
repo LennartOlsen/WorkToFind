@@ -22,11 +22,12 @@
             </b-navbar-nav>
         </b-collapse>
         </b-navbar>
-        <b-row>
+        <b-row style="margin-top:2em;">
             <b-col cols="2">
-                <li><h4>some sidebar</h4></li>
-                <li><router-link to="/contracts">List of contracts</router-link></li>
-                <li><router-link to="/new-contract">Add contract</router-link></li>
+                <b-nav vertical>
+                    <b-nav-item to="/contracts">List of contracts</b-nav-item>
+                    <b-nav-item to="/new-contract">Add contract</b-nav-item>
+                </b-nav>
             </b-col>
             <b-col cols="9">
                 <router-view v-if="profile && !profile.isPristine()">
@@ -60,10 +61,9 @@ export default {
     mounted : function(){
         let _this = this
         ProfileStore.get(this.user.uid).then( profile => {
-            console.log("Got Profile ", profile)
+            /** Trying to make sure that we are fed the latest profile on first login */
             if(profile == null){
                 ProfileStore.watchOnce(_this.user.uid).then(profile => {
-                    console.log("watchOnce Profile ", profile)
                     _this.profile = profile
                 })
             }

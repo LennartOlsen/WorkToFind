@@ -2,27 +2,28 @@
     <b-container fluid>
         <b-row>
             <b-col>
-            	<li class="contracts-list" v-for="contract in contractList" :key="contract.id">
-					<div class="item-content">
-						<div class="item-divider">{{contract.description}}</div>
-						<div class="item-text-wrap">
+				<b-list-group>
+					<b-list-group-item v-for="contract in contractList" :key="contract.id">
 							<b-row>
-								<b-col align-h="start" cols="11">
-									<ul>
-										<router-link :to="{ name: 'contract-view', params: {id: contract.id } }">
-											<li>UID: {{contract.uid}}</li>
-											<li>Hours: {{contract.hours}}</li>
-											<li>Employee: {{profileName[contract.uid]}}</li>
-										</router-link>
-									</ul>
+								<b-col cols="12">
+									<router-link :to="'/contracts/' + contract.id">
+										<h3 style="display:inline-block;">{{contract.description}}</h3> <span>by {{profileName[contract.uid]}}</span>
+									</router-link>
 								</b-col>
-								<b-col  cols="1">
-									<button>Bid</button>
+								<b-col cols="10">
+									<b-row>
+										<b-col><span class="boldie">Hours </span><br/>{{contract.hours}}</b-col>
+										<b-col><span class="boldie">Date </span><br/>{{contract.date}}</b-col>
+										<b-col><span class="boldie">Max Price </span><br/>{{contract.max_price}}</b-col>
+									</b-row>
+								</b-col>
+								<b-col cols="2">
+									<b-button variant="primary">Bid</b-button><b-form-input id="date_input" v-model.number="contract.nextbid" type="number"></b-form-input>
 								</b-col>
 							</b-row>
 						</div>
-					</div>
-				</li>
+					</b-list-group-item>
+				</b-list-group>
 			</b-col>
         </b-row>
     </b-container>
@@ -55,7 +56,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 	.contracts-list{
 		list-style: none;
 		padding: 1em;
@@ -76,5 +77,8 @@ export default {
 	}
 	a:hover { 
     	color: black;
+	}
+	.boldie {
+		font-weight: 800;
 	}
 </style>

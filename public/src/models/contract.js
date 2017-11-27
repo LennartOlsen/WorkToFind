@@ -5,9 +5,12 @@ export default class Contract {
         uid, 
         description = '', 
         employee = null,
-        hours = null,
+        hours = 0,
         updateTime = null,
-        deleteTime = null){
+        deleteTime = null,
+        max_price = 0,
+        next_bid = null,
+        label = null){
             
             if(id == null){
                 throw "Contract initialized with no id"
@@ -19,6 +22,9 @@ export default class Contract {
             this.uid = uid
             this.employee = employee
             this.hours = hours
+            this.max_price = max_price
+            this.next_bid = next_bid
+            this.label = null
 
             this.updateTime = updateTime
             this.deleteTime = deleteTime
