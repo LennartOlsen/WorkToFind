@@ -1,6 +1,7 @@
 //@ts-check
 export const STATES = {
-    ACCEPTED : 'accepted'
+    ACCEPTED : 'accepted',
+    NEW : 'new'
 }
 
 export default class Bid {

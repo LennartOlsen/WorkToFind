@@ -30,7 +30,7 @@
                     id="maxprice"
                     description="Max Price pr hour, the bidding starts here"
                     label="Max Price pr hour">
-                        <b-form-input id="maxprice_input" v-model.number="model.max_price" type="number"></b-form-input>
+                        <b-form-input id="maxprice_input" v-model.number="model.maxPrice" type="number"></b-form-input>
                     </b-form-group>
                     
                     <b-form-group
@@ -70,8 +70,8 @@ export default {
     },
     methods: {
         submitContract(){
-            if(this.model.next_bid == null){
-                this.model.next_bid = this.model.max_price
+            if(this.model.nextBid == null){
+                this.model.nextBid = this.model.maxPrice
             }
             store.update(this.model.id, this.model).then(error => {
                 if(error){

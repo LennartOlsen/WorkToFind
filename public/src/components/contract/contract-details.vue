@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid v-if="contract" >
+    <b-container fluid v-if="contract" v-bind:class="{ updated: isUpdated }">
         <b-row v-if="!edits">
             <b-col>
                 <p>Description:</p>
@@ -13,6 +13,23 @@
         <b-row v-if="edits">
             <contract-form :contract="contract"></contract-form>
         </b-row>
+
+        <b-row v-if="contract.currentBid">
+            <b-col>
+				<h3>Current Bid</h3>
+                {{contract.currentBid}}
+            </b-col>
+        </b-row>
+
+        <b-row>
+            <b-col>
+				<b-list-group v-if="bidList">
+					<b-list-group-item v-for="bid in bidList" :key="bid.id">
+                        {{bid.value}} - by {{bid.uid}}
+					</b-list-group-item>
+				</b-list-group>
+            </b-col>
+        </b-row>
     </b-container>
 </template>
 
@@ -21,6 +38,7 @@ import ContractStore from '../../repositories/contracts'
 import * as settings from '../../settings'
 import store from '../../repositories/contracts'
 import ContractForm from './contract-form.vue'
+import Bid from '../../models/bid'
 
 export default {
     name : 'contract-details-component',
@@ -31,7 +49,9 @@ export default {
     data : function() {
         return {
             contract : null,
-            edits : false
+            edits : false,
+            bidList : [],
+            isUpdated : false
         }
     },
     mounted : function(){
@@ -40,7 +60,11 @@ export default {
         }
         ContractStore.get(this.id).then( contract => {
             this.contract = contract
+            this.bidList = contract.bids
         })
+		ContractStore.Subscribe( (snap, prevChildKey) => {
+			this.updateContract(snap)
+		}, this.id, "child_changed")
     },
     computed : {
         canEdit(){
@@ -60,11 +84,39 @@ export default {
                     this.edits = !this.edits
                 }
             })
+        },
+        updateContract(snap){
+            console.log(snap.key)
+            console.log(this.bidList)
+            if(snap.key == "currentBid"){
+                let b = Bid.fromFirebase(snap.val())
+                
+                this.bidList[b.id] = b
+
+                this.contract.currentBid = b
+
+                this.isUpdated = true
+                let _this = this
+                setTimeout(function(){
+                    _this.isUpdated = false;
+                }, 2000);
+            }
         }
     } 
 }
 </script>
 
-<style>
-
+<style scoped>
+    div.container-fluid {
+        background-color: rgba(0,0,0,0);
+        -webkit-transition: background-color 200ms;
+        -moz-transition: background-color 200ms;
+        transition: background-color 200ms;
+    }
+    div.container-fluid.updated {
+        background-color: rgba(255,0,0,0.2);
+        -webkit-transition: background-color 200ms;
+        -moz-transition: background-color 200ms;
+        transition: background-color 200ms;
+    }
 </style>
