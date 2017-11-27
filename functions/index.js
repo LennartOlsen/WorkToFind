@@ -19,3 +19,7 @@ exports.createProfileInDB = functions.auth.user().onCreate(event => {
         }
     })
 });
+
+exports.reactToNewBid = functions.database.ref('contracts/{contractId}/bids').onUpdate(event => {
+    let bid = event.data
+})

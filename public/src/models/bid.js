@@ -1,6 +1,7 @@
 //@ts-check
 export const STATES = {
-    ACCEPTED : 'accepted'
+    ACCEPTED : 'accepted',
+    NEW : 'new'
 }
 
 export default class Bid {
@@ -12,6 +13,7 @@ export default class Bid {
         value = null,
         updateTime = null,
         deleteTime = null,
+        profile = null
     ){
         if(id == null){
             throw "Bid initialized with no id"
@@ -27,6 +29,7 @@ export default class Bid {
         this.state = state
         this.updateTime = updateTime
         this.deleteTime = deleteTime
+        this.profile = profile
     }
 
     static fromFirebase(fb){
