@@ -26,8 +26,8 @@
             <b-col>
 				<b-list-group v-if="bidList">
 					<b-list-group-item v-for="bid in bidList" :key="bid.id">
-                        {{bid.value}} - by
-                        <span v-if="contract.currentBid && contract.currentBid.profile"> {{contract.currentBid.profile.displayName}} </span>
+                        {{bid.value}} - by 
+                        <span v-if="bid.profile"> {{bid.profile.displayName}} </span>
 					</b-list-group-item>
 				</b-list-group>
             </b-col>
@@ -53,7 +53,8 @@ export default {
             contract : null,
             edits : false,
             bidList : [],
-            isUpdated : false
+            isUpdated : false,
+            profileName : {}       
         }
     },
     mounted : function(){
@@ -66,7 +67,7 @@ export default {
         })
 		ContractStore.Subscribe( (snap, prevChildKey) => {
 			this.updateContract(snap)
-		}, this.id, "child_changed")
+        }, this.id, "child_changed")
     },
     computed : {
         canEdit(){

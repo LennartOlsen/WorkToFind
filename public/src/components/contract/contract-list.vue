@@ -7,8 +7,9 @@
 						<b-row>
 							<b-col cols="12">
 								<router-link :to="'/contracts/' + contract.id">
-									<h3 style="display:inline-block;">{{contract.description}}</h3> <span>by {{profileName[contract.uid]}}</span>
-								</router-link>
+									<h3 style="display:inline-block;">{{contract.label}}</h3>
+								</router-link> <span>by <router-link :to="'/profile/'+ contract.uid"> {{profileName[contract.uid]}}</router-link></span>
+								<p> {{contract.description}} </p>
 							</b-col>
 							<b-col cols="10">
 								<b-row>

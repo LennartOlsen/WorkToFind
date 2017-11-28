@@ -41,6 +41,7 @@
                     </b-form-group>
 
                     <b-button @click='submitContract' variant="primary">Submit</b-button>
+                    <b-button @click='resetBid' variant="primary">Reset Bid</b-button>
                 </form>
             </b-col>
         </b-row>
@@ -80,6 +81,9 @@ export default {
                     this.$router.push('/contracts')
                 }
             })
+        },
+        resetBid(){
+            this.model.nextBid = this.model.maxPrice
         }
     }
 }

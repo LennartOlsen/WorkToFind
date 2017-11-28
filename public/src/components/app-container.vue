@@ -16,7 +16,7 @@
                 <template slot="button-content">
                 <em>User</em>
                 </template>
-                <b-dropdown-item>Profile</b-dropdown-item>
+                <b-dropdown-item :to="'/profile/'+ this.user.uid">Profile</b-dropdown-item>
                 <b-dropdown-item v-on:click="logout()">Signout</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
@@ -80,11 +80,14 @@ export default {
         logout() {
             settings.logOut()
             window.location.replace('/')
-        }
+        },
     }
 }
 </script>
 
 <style>
-
+    #app > div {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 </style>
