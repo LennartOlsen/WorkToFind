@@ -24,7 +24,29 @@
         </b-card-footer>
     </b-card>
         <b-row v-if="edits">
-            <profile-form :profile="profile"></profile-form>
+            <form>
+                <b-form-group
+                    id="fieldset1"
+                    description="Let us know your name."
+                    label="Enter your name"
+                    :feedback="feedbackDisplayName"
+                    valid-feedback="Thank you"
+                    :state="validDisplayName">
+                    <b-form-input id="input1" :state="validDisplayName" v-model.trim="profile.displayName"></b-form-input>
+                </b-form-group>
+                <b-form-group
+                        :state="validProfileType"
+                        :feedback="feedbackProfileType" >
+                <b-form-radio-group id="btnradios2"
+                        buttons
+                        button-variant="outline-primary"
+                        size="lg"
+                        v-model="profile.type"
+                        :options="types"
+                        name="radioBtnOutline"/>
+                </b-form-group>
+                <b-button :variant='buttonVariant' :disabled="buttonVariant == 'warning'" @click='submitProfile'>Submit</b-button>
+            </form>
         </b-row>
             </b-col>
             <b-col cols="2" class="text-center">
@@ -48,6 +70,7 @@ import ProfileStore from '../../repositories/profiles'
 import * as settings from '../../settings'
 import store from '../../repositories/profiles'
 import ProfileForm from './profile-form.vue'
+import {TYPES} from '../../models/profile'
 
 export default {
     name : 'profile-details-component',
@@ -58,7 +81,8 @@ export default {
     data : function() {
         return {
             profile : null,
-            edits : false,      
+            edits : false,
+            types : TYPES     
         }
     },
     mounted : function(){
@@ -69,6 +93,21 @@ export default {
     computed : {
         canEdit(){
             return this.profile.uid == settings.getCurrentUser().uid
+        },
+        validDisplayName() {
+            return this.profile.displayName.length > 0 ? 'valid' : 'invalid'
+        },
+        feedbackDisplayName() {
+            return this.profile.displayName.length > 0 ? 'Your name must be at least 1 char' : 'The field seems to be empty'
+        },
+        validProfileType() {
+            return this.profile.type == null ? 'invalid' : 'valid'
+        },
+        feedbackProfileType() {
+            return this.profile.type == null ? 'Select a profile type please' : ''
+        },
+        buttonVariant() {
+            return this.profile.type != null && this.profile.displayName != null ? "success" : "warning"
         }
     }, 
     methods : {
@@ -76,15 +115,14 @@ export default {
             this.edits = !this.edits
         },
         submitProfile(){
-            store.update(this.profile.id, this.profile).then(error => {
-                if(error){
-                    console.log(error)
-                } else {
-                    console.log("Profile updated/created")
-                    this.edits = !this.edits
+            ProfileStore.update(this.profile.uid, this.profile).then(error => {
+                if(!error){
+                    this.$emit("updated", this.profile)
                 }
             })
-        },
+            console.log(this.profile)
+            this.edits = !this.edits
+        }
     } 
 }
 </script>

@@ -37,7 +37,7 @@ export default {
     methods: {
         addRatingToUser(numberRating){
             if(numberRating >=0 && numberRating <= 5){
-
+                
                 this.profile.totalRating += numberRating
                 this.profile.numberOfRatings += 1
                 this.profile.averageRating = this.profile.totalRating / this.profile.numberOfRatings
@@ -62,4 +62,5 @@ export default {
 #star-rating img:hover{
     cursor: pointer;
 }
+
 </style>
