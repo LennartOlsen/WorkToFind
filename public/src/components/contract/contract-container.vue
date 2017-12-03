@@ -1,6 +1,5 @@
 <template>
     <b-container fluid>
-        <h1>Hello Contracts</h1>
         <contract-list-componet>
         </contract-list-componet>
     </b-container>

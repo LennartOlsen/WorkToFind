@@ -2,11 +2,24 @@
     <b-container fluid v-if="contract" v-bind:class="{ updated: isUpdated }">
         <b-row v-if="!edits">
             <b-col>
-                <p>Description:</p>
-                <h1>{{contract.description}}</h1>
-                <p>Number of hours:</p>
-                <h3>{{contract.hours}}</h3>
-                <b-button variant="primary" v-if="canEdit" @click="toggleEdit">Edit</b-button>
+                <b-card no-body>
+                    <b-card-body slot="header">
+                    <h4>Contract</h4>
+                    {{contract.label}}
+                    </b-card-body>
+                    <b-list-group flush>
+                        <b-list-group-item>Description: {{contract.description}}</b-list-group-item>
+                        <b-list-group-item>Number of hours: {{contract.hours}}</b-list-group-item>
+                        <b-list-group-item>Max price : {{contract.maxPrice}}</b-list-group-item>
+                        <b-list-group-item>Current bid : <span v-if="contract.currentBid">{{contract.currentBid.value}}</span></b-list-group-item>
+                        <b-list-group-item>Current bid : <span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-list-group-item>                    
+                    </b-list-group>
+                    <b-card-footer>
+                        <a v-if="canEdit" @click="toggleEdit"
+                        class="card-link" style="cursor:default">Edit</a>
+                        <a class="card-link" style="color:red;cursor:default">Delete</a>
+                    </b-card-footer>
+                </b-card>
             </b-col>
         </b-row>
         
@@ -18,7 +31,7 @@
             <b-col>
 				<h3>Current Bid</h3>
                 {{contract.currentBid.value}}
-                <span v-if="contract.currentBid && contract.currentBid.profile"> {{contract.currentBid.profile.displayName}} </span>
+                <span v-if="contract.currentBid && contract.currentBid.profile"> by  {{contract.currentBid.profile.displayName}} </span>
             </b-col>
         </b-row>
 

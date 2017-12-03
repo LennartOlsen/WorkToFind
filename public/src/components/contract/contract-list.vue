@@ -3,15 +3,17 @@
         <b-row>
             <b-col>
 				<b-list-group>
-					<b-list-group-item v-for="contract in contractList" :key="contract.id">
+					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id">
 						<b-row>
-							<b-col cols="12">
-								<router-link :to="'/contracts/' + contract.id">
-									<h3 style="display:inline-block;">{{contract.label}}</h3>
-								</router-link> <span>by <router-link :to="'/profile/'+ contract.uid"> {{profileName[contract.uid]}}</router-link></span>
-								<p> {{contract.description}} </p>
-							</b-col>
-							<b-col cols="10">
+							<b-card no-body style="width: 100%;">
+        					<h4 slot="header">
+								<router-link :to="'/contracts/' + contract.id">{{contract.label}}</router-link><br>
+								<router-link :to="'/profile/'+ contract.uid" style="font-size:15px;color:grey"> {{profileName[contract.uid]}}</router-link>
+							</h4>
+							<b-card-body>
+							 {{contract.description}}
+							</b-card-body>
+							<b-card-body>
 								<b-row>
 									<b-col><span class="boldie">Hours </span><br/>{{contract.hours}}</b-col>
 									<b-col><span class="boldie">Date </span><br/>{{contract.date}}</b-col>
@@ -19,20 +21,24 @@
 									<b-col><span class="boldie">Current Bid </span><br/><span v-if="contract.currentBid">{{contract.currentBid.value}}</span></b-col>
 									<b-col><span class="boldie">Winner </span><br/><span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-col>
 								</b-row>
-							</b-col>
-							<b-col cols="2">
+							</b-card-body>
+							<div slot="footer">
 								<b-row>
-									<b-col cols="3">
-										<b-button variant="primary" @click="doBid(contract)">Bid</b-button>
-										<span class="error" v-show="error[contract.id]" v-if="contract.currentBid">
-											Next Bid ({{contract.nextBid}}) must be smaller than ({{contract.currentBid.value}})
-										</span>
-									</b-col>
-									<b-col cols="9">
+									<b-col cols="5" offset-md="4">
 										<b-form-input id="next_bid" v-model.number="contract.nextBid" type="number"></b-form-input>
 									</b-col>
+									<b-col cols="2">
+										<b-button variant="primary" @click="doBid(contract)">Bid</b-button>
+										<b-button variant="secondary" :to="'/contracts/' + contract.id" style="color:white;cursor:default">View</b-button>
+									</b-col>
 								</b-row>
-							</b-col>
+								<b-alert style="margin-top:10px"
+									variant="danger" dismissible :show="error[contract.id]" 
+									@dismissed="error[contract.id]=false">
+										Next Bid ({{contract.nextBid}}) must be smaller than ({{contract.currentBid.value}})
+								</b-alert>	
+							</div>
+							</b-card>
 						</b-row>
 					</b-list-group-item>
 				</b-list-group>
@@ -58,7 +64,8 @@ export default {
 			contractList: null,
 			error : [],
 			profileName: {},
-			profile : null
+			profile : null,
+			showDismissibleAlert: []
         }
 	},
 	mounted : function() {
@@ -81,7 +88,7 @@ export default {
 	methods : {
 		doBid(contract){
 			if(contract.currentBid && contract.nextBid >= contract.currentBid.value){
-				this.error[contract.id] = true
+				this.$set(this.error ,contract.id , true)
 				return;
 			}
 			let b = new Bid(
@@ -123,28 +130,7 @@ export default {
 </script>
 
 <style scoped>
-	.contracts-list{
-		list-style: none;
-		padding: 1em;
-		border-bottom: solid 1px #ccc;
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: flex;
-		-webkit-transition: all 1s;
-		transition: all 1s;
-	}
-	.item-avatar .item-content .item-text-wrap {
-		font-size: 14px;
-		line-height: 1.3;
-	}
-	a {
-		color: #2c3e4f;
-		font : outline;
-	}
-	a:hover { 
-    	color: black;
-	}
-	.boldie {
-		font-weight: 800;
+	#contracts-list{
+		border: 0px
 	}
 </style>

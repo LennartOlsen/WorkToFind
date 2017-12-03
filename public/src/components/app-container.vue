@@ -1,6 +1,6 @@
 <template>
-    <b-container fluid>
-        <b-navbar toggleable="md" type="dark" variant="info">
+<div>
+    <b-navbar toggleable="md" type="dark" variant="info">
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
         <b-navbar-brand href="#">NavBar</b-navbar-brand>
         <b-collapse is-nav id="nav_collapse">
@@ -14,80 +14,83 @@
             <b-nav-item-dropdown right>
                 <!-- Using button-content slot -->
                 <template slot="button-content">
-                <em>User</em>
+                <em>{{this.user.displayName}}</em>
                 </template>
                 <b-dropdown-item :to="'/profile/'+ this.user.uid">Profile</b-dropdown-item>
                 <b-dropdown-item v-on:click="logout()">Signout</b-dropdown-item>
             </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-collapse>
-        </b-navbar>
-        <b-row style="margin-top:2em;">
-            <b-col cols="2">
-                <b-nav vertical>
-                    <b-nav-item to="/contracts">List of contracts</b-nav-item>
-                    <b-nav-item to="/new-contract">Add contract</b-nav-item>
-                </b-nav>
-            </b-col>
-            <b-col cols="9">
-                <router-view v-if="profile && !profile.isPristine()">
-                </router-view>
-                <template v-if="profile && profile.isPristine()">
-                    <h2>Please update your profile to carry on</h2>
-                    <profile-form-component :profile="profile" 
-                                            @updated="updatedProfile">
-                    </profile-form-component>
-                </template>
-            </b-col>
-        </b-row>
-    </b-container>
+      </b-navbar>
+      <div id="main-content">
+        <container fluid>
+          <b-row style="margin-top:2em; margin-right:0">
+                <b-col cols="2">
+                    <b-nav vertical>
+                        <b-nav-item to="/contracts">List of contracts</b-nav-item>
+                        <b-nav-item to="/new-contract">Add contract</b-nav-item>
+                    </b-nav>
+                </b-col>
+                <b-col cols="9">
+                    <router-view v-if="profile && !profile.isPristine()">
+                    </router-view>
+                    <template v-if="profile && profile.isPristine()">
+                        <h2>Please update your profile to carry on</h2>
+                        <profile-form-component :profile="profile" 
+                                                @updated="updatedProfile">
+                        </profile-form-component>
+                    </template>
+                </b-col>
+          </b-row>
+        </container>
+      </div>
+</div>
 </template>
 
 <script>
-import * as settings from './../settings'
-import ProfileStore from '../repositories/profiles'
-import ProfileFormComponent from './profile/profile-form'
+import * as settings from "./../settings";
+import ProfileStore from "../repositories/profiles";
+import ProfileFormComponent from "./profile/profile-form";
+
 export default {
-    name : 'app-container-component',
-    components : {
-        ProfileFormComponent
+  name : "app-container-component",
+  components : {
+    ProfileFormComponent  
     },
-    props : ['user'],
-    data : function() {
-        return {
-            profile : null,
-        }
+  props : ["user"],
+  data : function() {
+    return {
+      profile : null,
+    };
+  },
+  mounted : function() {
+    let _this = this;
+    ProfileStore.get(this.user.uid).then(profile => {
+      /** Trying to make sure that we are fed the latest profile on first login */
+      if (profile == null) {
+        ProfileStore.watchOnce(_this.user.uid).then(profile => {
+          _this.profile = profile;
+        });
+      }
+      _this.profile = profile;
+    });
+  },
+  methods: {
+    profileCallback(profile) {},
+    updatedProfile(profile) {
+      this.profile = profile;
+      this.$set(this.profile, profile);
     },
-    mounted : function(){
-        let _this = this
-        ProfileStore.get(this.user.uid).then( profile => {
-            /** Trying to make sure that we are fed the latest profile on first login */
-            if(profile == null){
-                ProfileStore.watchOnce(_this.user.uid).then(profile => {
-                    _this.profile = profile
-                })
-            }
-            _this.profile = profile
-        })
-    },
-    methods : {
-        profileCallback(profile){
-        },
-        updatedProfile(profile){
-            this.profile = profile
-            this.$set(this.profile, profile)
-        },
-        logout() {
-            settings.logOut()
-            window.location.replace('/')
-        },
+    logout() {
+      settings.logOut();
+      window.location.replace("/");
     }
-}
+  }
+};
 </script>
 
 <style>
-    #app > div {
-        padding-left: 0px;
-        padding-right: 0px;
-    }
+  #main-content {
+    margin-right: 0px;
+  }
 </style>
