@@ -50,7 +50,7 @@
                             </router-link>
                         </h4>
                     </b-col>
-                    <b-col v-if="profile != null && profile.uid == contract.uid">
+                    <b-col v-if="profile && profile.uid == contract.uid">
                         <b-button
                         @click="selectWinningBid(contract.currentBid)"
                         variant="primary">Select Winning Bid</b-button>

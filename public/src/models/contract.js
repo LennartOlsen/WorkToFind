@@ -87,6 +87,9 @@ export default class Contract {
     }
     
     canComplete(uid){
+        if(this.winningBid == null){
+            return false;
+        }
         return this.uid == uid || this.winningBid.profile.uid == uid
     }
 
