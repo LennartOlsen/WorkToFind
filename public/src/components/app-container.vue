@@ -2,11 +2,10 @@
 <div>
     <b-navbar toggleable="md" type="dark" variant="info">
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-        <b-navbar-brand href="#">NavBar</b-navbar-brand>
         <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav>
-            <b-nav-item href="#">Link</b-nav-item>
-            <b-nav-item href="#" disabled>Disabled</b-nav-item>
+              <b-nav-item to="/contracts">List of contracts</b-nav-item>
+              <b-nav-item to="/new-contract" v-if="profile && profile.type == 'CONTRACTOR'">Add contract</b-nav-item>
             </b-navbar-nav>
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
@@ -27,8 +26,7 @@
           <b-row style="margin-top:2em; margin-right:0">
                 <b-col cols="2">
                     <b-nav vertical>
-                        <b-nav-item to="/contracts">List of contracts</b-nav-item>
-                        <b-nav-item to="/new-contract">Add contract</b-nav-item>
+                        
                     </b-nav>
                 </b-col>
                 <b-col cols="9">
@@ -55,12 +53,12 @@ import ProfileFormComponent from "./profile/profile-form";
 export default {
   name : "app-container-component",
   components : {
-    ProfileFormComponent  
+    ProfileFormComponent
     },
   props : ["user"],
   data : function() {
     return {
-      profile : null,
+      profile : null
     };
   },
   mounted : function() {

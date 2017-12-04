@@ -22,7 +22,7 @@
 									<b-col><span class="boldie">Winner </span><br/><span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-col>
 								</b-row>
 							</b-card-body>
-							<div slot="footer">
+							<div slot="footer" v-if="profile && profile.uid != contract.uid && profile.type == 'EMPLOYEE'">
 								<b-row>
 									<b-col cols="5" offset-md="4">
 										<b-form-input id="next_bid" v-model.number="contract.nextBid" type="number"></b-form-input>
@@ -69,6 +69,9 @@ export default {
         }
 	},
 	mounted : function() {
+		Profiles.get(Settings.getCurrentUser().uid).then( profile => {
+			this.profile = profile
+		})
 		ContractStore.get(null).then( contractList => {
 			this.contractList = contractList;
 			this.contractList.forEach(contract => {
@@ -83,9 +86,8 @@ export default {
 		ContractStore.Subscribe( (snap, prevChildKey) => {
 			this.updateContract(snap)
 		}, null, "child_changed")
-		Profiles.get(Settings.getCurrentUser().uid).then( profile => {
-			this.profile = profile
-		})
+		
+		
 	},
 	methods : {
 		doBid(contract){

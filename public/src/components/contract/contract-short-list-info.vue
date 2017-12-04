@@ -2,7 +2,7 @@
     <b-list-group>
         <b-list-group-item v-for="contract in contractList" :key="contract.id">
             <b-row>
-                {{contract.label}} - <b> Bid </b> : {{contract.currentBid.value}}
+                {{contract.label}} - <b> Bid </b> : 
             </b-row>
         </b-list-group-item>
     </b-list-group>

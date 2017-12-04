@@ -14,8 +14,8 @@
                         <b-list-group-item>Current bid : <span v-if="contract.currentBid">{{contract.currentBid.value}}</span></b-list-group-item>
                         <b-list-group-item>Bid By : <span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-list-group-item>                    
                     </b-list-group>
-                    <b-card-footer>
-                        <a v-if="canEdit" @click="toggleEdit"
+                    <b-card-footer v-if="canEdit">
+                        <a  @click="toggleEdit"
                         class="card-link" style="cursor:default">Edit</a>
                         <a class="card-link" style="color:red;cursor:default">Delete</a>
                     </b-card-footer>
@@ -80,7 +80,7 @@ export default {
             edits : false,
             bidList : [],
             isUpdated : false,
-            profileName : {}       
+            profileName : {}     
         }
     },
     mounted : function(){
