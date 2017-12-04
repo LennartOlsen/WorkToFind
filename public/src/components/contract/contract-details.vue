@@ -12,7 +12,7 @@
                             <b-col v-if="isAllowedToComplete()">
                                 <b-button
                                 variant="primary" 
-                                :disabled="!isCompleted() && !hasCompleted()"
+                                v-if="!isCompleted() && !hasCompleted()"
                                 @click="doComplete()">Complete</b-button>
                                 <p v-if="!hasCompleted() && !isCompleted()">Confirm that the contract has been completed</p>
                                 <p v-if="hasCompleted() && !isCompleted()">Waiting for the other peer to complete this contract</p>
