@@ -27,6 +27,7 @@
 		</div>
 	</section>
 	</b-row>
+	<notifications />
 	</b-container>
   </div>
 </template>
