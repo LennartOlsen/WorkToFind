@@ -15,7 +15,8 @@ export default class Contract {
      * @param {*} nextBid 
      * @param {*} label 
      * @param {Object<string, Bid>} bids 
-     * @param {Bid} currentBid 
+     * @param {Bid} currentBid
+     * @param {Bid} winningBid
      */
     constructor(id,
         uid, 
@@ -28,7 +29,8 @@ export default class Contract {
         nextBid = null,
         label = null,
         bids = {},
-        currentBid = null){
+        currentBid = null,
+        winningBid = null){
             
             if(id == null){
                 throw "Contract initialized with no id"
@@ -48,6 +50,8 @@ export default class Contract {
 
             this.updateTime = updateTime
             this.deleteTime = deleteTime
+            
+            this.winningBid = winningBid
     }
 
     static fromFirebase(fb){
@@ -55,15 +59,14 @@ export default class Contract {
         for(var key in fb){
             if(fb.hasOwnProperty(key)){
                 if(key == 'bids'){
-                    entity.bids = {}
-                    for(let bidKey in fb[key]){
-                        let bid = Bid.fromFirebase(fb[key][bidKey])
-                        entity.bids[bid.id] = bid
-                    }
+                    /** Do nothing */
                 } else if( key == 'currentBid' ){
                     entity[key] == Bid.fromFirebase(fb[key])
+                } else if( key == 'winningBid' ){
+                    entity[key] == Bid.fromFirebase(fb[key])
+                }else {
+                    entity[key] = fb[key]
                 }
-                entity[key] = fb[key]
             }
         }
         return entity
@@ -79,7 +82,6 @@ export default class Contract {
      */
     pushBid(bid){
         this.currentBid = bid;
-        this.bids[bid.id] = bid;
         
         return this
     }

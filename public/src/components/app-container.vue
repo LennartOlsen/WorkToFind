@@ -23,7 +23,7 @@
         </b-collapse>
       </b-navbar>
       <div id="main-content">
-        <container fluid>
+        <b-container fluid>
           <b-row style="margin-top:2em; margin-right:0">
                 <b-col cols="2">
                     <b-nav vertical>
@@ -42,7 +42,7 @@
                     </template>
                 </b-col>
           </b-row>
-        </container>
+        </b-container>
       </div>
 </div>
 </template>
