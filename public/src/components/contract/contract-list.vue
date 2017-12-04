@@ -3,7 +3,7 @@
         <b-row>
             <b-col>
 				<b-list-group>
-					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id">
+					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id" v-if="contract.winningBid == null">
 						<b-row>
 							<b-card no-body style="width: 100%;">
         					<h4 slot="header">
