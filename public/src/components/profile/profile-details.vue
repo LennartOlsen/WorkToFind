@@ -27,8 +27,7 @@
         </b-row>
             </b-col>
             <b-col cols="4" class="text-center">
-                <h3>Contracts</h3>
-                    <contracts-widget :id="id"></contracts-widget>
+                <contracts-widget :id="id"></contracts-widget>
             </b-col>
         </b-row>
     </b-container>
