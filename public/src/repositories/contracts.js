@@ -22,6 +22,10 @@ class Contracts extends BaseRepository {
         return this.unwrap(super.getReference(id).once('value'))
     }
 
+    getByUID(id) {
+        return this.unwrapList(super.getReference().orderByChild("uid").equalTo(id).once("value"));
+    }
+
     Subscribe(cb, id = null, type="value"){
         return super.getReference(id).on(type, (snap, prevChildKey) => { cb(snap, prevChildKey) })
     }
