@@ -2,7 +2,8 @@
 export const STATES = {
     ACCEPTED : 'accepted',
     NEW : 'new',
-    CURRENT : 'current'
+    CURRENT : 'current',
+    WINNING : 'winning'
 }
 
 export default class Bid {
