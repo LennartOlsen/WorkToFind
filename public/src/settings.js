@@ -20,3 +20,7 @@ export function getFirebase(){
 export function getCurrentUser() {
     return getFirebase().auth().currentUser
 }
+
+export function logOut() { 
+    firebase.auth().signOut()
+} 

@@ -16,7 +16,10 @@ export default class Profile {
         type = null, 
         state = null,
         updateTime = null,
-        deleteTime = null){
+        deleteTime = null,
+        numberOfRatings = null,
+        totalRating = null,
+        averageRating = null){
             if(uid == null){
                 throw "Profile initialized with no uid"
             }
@@ -28,6 +31,9 @@ export default class Profile {
             this.state = state
             this.updateTime = updateTime
             this.deleteTime = deleteTime
+            this.numberOfRatings = numberOfRatings
+            this.totalRating = totalRating
+            this.averageRating = averageRating
     }
 
     static fromFirebase(fb){

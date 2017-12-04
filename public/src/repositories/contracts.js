@@ -22,6 +22,14 @@ class Contracts extends BaseRepository {
         return this.unwrap(super.getReference(id).once('value'))
     }
 
+    Subscribe(cb, id = null, type="value"){
+        return super.getReference(id).on(type, (snap, prevChildKey) => { cb(snap, prevChildKey) })
+    }
+
+    SubscribeToBids(cb, id, type="child_added"){
+        return super.getReference(id).child("bids").on(type, (snap, prevChildKey) => { cb(snap, prevChildKey) })
+    }
+
     /**
      * 
      * @param {Promise<any>} promise 
@@ -29,7 +37,6 @@ class Contracts extends BaseRepository {
      */
     unwrap(promise){
         return promise.then(snap => {
-            console.log(snap.val())
             if(snap.exists()){
                 return Contract.fromFirebase(snap.val())
             }
