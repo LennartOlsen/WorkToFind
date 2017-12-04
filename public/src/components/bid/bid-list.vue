@@ -11,7 +11,7 @@
                             </router-link>
                         </span>
                     </b-col>
-                    <b-col v-if="addSelect">
+                    <b-col v-if="addSelect && profile && profile.uid == contractId">
                         <b-button @click="select(bid)" variant="primary">Select Winning Bid</b-button>
                     </b-col>
                 </b-row>
@@ -29,6 +29,8 @@
 import ContractBidsStore from '../../repositories/contract-bids'
 import ProfileBidsStore from '../../repositories/profile-bids'
 import BidsStore from '../../repositories/bids'
+import Profiles from '../../repositories/profiles'
+import * as Settings from '../../settings'
 
 export default {
     name : 'bid-list-component',
@@ -36,10 +38,15 @@ export default {
     data : function(){
         return {
             bidList : [],
-            error : null
+            error : null,
+            profile: null
         }
     },
     mounted : function(){
+        Profiles.get(Settings.getCurrentUser().uid).then( profile => {
+			this.profile = profile
+        })
+        
         if(this.contractId && this.profileId){
             console.error("only profile id or contract id not both", "using the contract id")
         }

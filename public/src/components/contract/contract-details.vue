@@ -52,7 +52,7 @@
                             </router-link>
                         </h4>
                     </b-col>
-                    <b-col>
+                    <b-col v-if="profile != null && profile.uid == contract.uid">
                         <b-button
                         @click="selectWinningBid(contract.currentBid)"
                         variant="primary">Select Winning Bid</b-button>
@@ -93,11 +93,11 @@
 <script>
 import ContractStore from '../../repositories/contracts'
 import BidStore from '../../repositories/bids'
+import Profiles from '../../repositories/profiles'
 import * as settings from '../../settings'
 import store from '../../repositories/contracts'
 import ContractForm from './contract-form.vue'
 import Bid, {STATES} from '../../models/bid'
-
 import BidListComponent from '../bid/bid-list'
 
 export default {
@@ -112,10 +112,14 @@ export default {
             contract : null,
             edits : false,
             isUpdated : false,
+            profile: null,
             profileName : {}     
         }
     },
     mounted : function(){
+        Profiles.get(settings.getCurrentUser().uid).then( profile => {
+			this.profile = profile
+		})
         if(!this.id){
             console.error("You not welcome here")
         }
