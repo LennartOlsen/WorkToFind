@@ -32,7 +32,7 @@
 										<b-button variant="secondary" :to="'/contracts/' + contract.id" style="color:white;cursor:default">View</b-button>
 									</b-col>
 								</b-row>
-								<b-alert style="margin-top:10px"
+								<b-alert v-if="contract.currentBid" style="margin-top:10px"
 									variant="danger" dismissible :show="error[contract.id]" 
 									@dismissed="error[contract.id]=false">
 										Next Bid ({{contract.nextBid}}) must be smaller than ({{contract.currentBid.value}})
@@ -73,7 +73,9 @@ export default {
 			this.contractList = contractList;
 			this.contractList.forEach(contract => {
 				Profiles.get(contract.uid).then( profile => {
-					this.$set(this.profileName, contract.uid ,profile.displayName);
+					if(profile){
+						this.$set(this.profileName, contract.uid, profile.displayName);
+					}
 				});
 			});
 		})
@@ -97,13 +99,14 @@ export default {
 				contract.id,
 				STATES.NEW,
 				contract.nextBid,
+				Date.now(),
 				null,
-				null,
-				this.profile)
+				this.profile,
+				Date.now())
 
 			contract.pushBid(b)
 
-			ContractStore.update(contract.id, contract)
+			BidStore.update(b.id, b)
 		},
 		updateContract(snap){
 			if(snap.exists()){ /** Handle deleted or removed contracts */

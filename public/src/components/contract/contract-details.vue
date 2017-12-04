@@ -1,6 +1,6 @@
 <template>
     <b-container fluid v-if="contract" v-bind:class="{ updated: isUpdated }">
-        <b-row v-if="!edits">
+        <b-row v-if="!edits" class="my-2">
             <b-col>
                 <b-card no-body>
                     <b-card-body slot="header">
@@ -12,7 +12,7 @@
                         <b-list-group-item>Number of hours: {{contract.hours}}</b-list-group-item>
                         <b-list-group-item>Max price : {{contract.maxPrice}}</b-list-group-item>
                         <b-list-group-item>Current bid : <span v-if="contract.currentBid">{{contract.currentBid.value}}</span></b-list-group-item>
-                        <b-list-group-item>Current bid : <span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-list-group-item>                    
+                        <b-list-group-item>Bid By : <span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-list-group-item>                    
                     </b-list-group>
                     <b-card-footer>
                         <a v-if="canEdit" @click="toggleEdit"
@@ -23,19 +23,32 @@
             </b-col>
         </b-row>
         
-        <b-row v-if="edits">
+        <b-row v-if="edits" class="my-2">
             <contract-form :contract="contract"></contract-form>
         </b-row>
 
-        <b-row v-if="contract.currentBid">
+        <b-row v-if="contract.currentBid" class="current-bid my-2">
             <b-col>
-				<h3>Current Bid</h3>
-                {{contract.currentBid.value}}
-                <span v-if="contract.currentBid && contract.currentBid.profile"> by  {{contract.currentBid.profile.displayName}} </span>
+                <b-card title="Current Bid" :subTitle="getSub()">
+                <b-row>
+                    <b-col>
+                        <span>By: </span>
+                        <h4 style="display:inline-block">
+                            <router-link :to="'/profile/' + contract.currentBid.profile.uid">
+                                {{contract.currentBid.profile.displayName}}
+                            </router-link>
+                        </h4>
+                    </b-col>
+                    <b-col>
+                        <b-button href="#"
+                        variant="primary">Select Winning Bid</b-button>
+                    </b-col>
+                </b-row>
+                </b-card>
             </b-col>
         </b-row>
 
-        <b-row>
+        <b-row class="my-2">
             <b-col>
 				<b-list-group v-if="bidList">
 					<b-list-group-item v-for="bid in bidList" :key="bid.id">
@@ -117,19 +130,25 @@ export default {
                     _this.isUpdated = false;
                 }, 2000);
             }
+        },
+        getSub(){
+            if(this.contract.currentBid.value){
+                return 'Value ' + this.contract.currentBid.value
+            }
+            return 'Not yet placed'
         }
     } 
 }
 </script>
 
 <style scoped>
-    div.container-fluid {
+    div.container-fluid .current-bid .card {
         background-color: rgba(0,0,0,0);
         -webkit-transition: background-color 200ms;
         -moz-transition: background-color 200ms;
         transition: background-color 200ms;
     }
-    div.container-fluid.updated {
+    div.container-fluid.updated .current-bid .card {
         background-color: rgba(255,0,0,0.2);
         -webkit-transition: background-color 200ms;
         -moz-transition: background-color 200ms;

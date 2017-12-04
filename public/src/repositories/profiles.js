@@ -41,7 +41,6 @@ class Profiles extends BaseRepository {
      */
     unwrap(promise){
         return promise.then(snap => {
-            console.log(snap)
             if(snap.exists()){
                 return Profile.fromFirebase(snap.val())
             }
