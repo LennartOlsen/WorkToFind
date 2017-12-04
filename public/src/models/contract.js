@@ -14,7 +14,6 @@ export default class Contract {
      * @param {*} maxPrice 
      * @param {*} nextBid 
      * @param {*} label 
-     * @param {Object<string, Bid>} bids 
      * @param {Bid} currentBid
      * @param {Bid} winningBid
      */
@@ -28,7 +27,6 @@ export default class Contract {
         maxPrice = 0,
         nextBid = null,
         label = null,
-        bids = {},
         currentBid = null,
         winningBid = null){
             
@@ -45,7 +43,6 @@ export default class Contract {
             this.maxPrice = maxPrice
             this.nextBid = nextBid
             this.label = label
-            this.bids = bids
             this.currentBid = currentBid
 
             this.updateTime = updateTime
@@ -64,9 +61,8 @@ export default class Contract {
                     entity[key] == Bid.fromFirebase(fb[key])
                 } else if( key == 'winningBid' ){
                     entity[key] == Bid.fromFirebase(fb[key])
-                }else {
-                    entity[key] = fb[key]
                 }
+                entity[key] = fb[key]
             }
         }
         return entity

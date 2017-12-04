@@ -27,9 +27,9 @@
             <contract-form :contract="contract"></contract-form>
         </b-row>
 
-        <b-row v-if="contract.currentBid" class="current-bid my-2">
+        <b-row v-if="contract.currentBid" class="current-bid my-2" v-show="!contract.winningBid">
             <b-col>
-                <b-card title="Current Bid" :subTitle="getSub()">
+                <b-card title="Current Bid" :subTitle="getSub(contract.currentBid)">
                 <b-row>
                     <b-col>
                         <span>By: </span>
@@ -40,7 +40,8 @@
                         </h4>
                     </b-col>
                     <b-col>
-                        <b-button href="#"
+                        <b-button
+                        @click="selectWinningBid(contract.currentBid)"
                         variant="primary">Select Winning Bid</b-button>
                     </b-col>
                 </b-row>
@@ -48,14 +49,29 @@
             </b-col>
         </b-row>
 
-        <b-row class="my-2">
+        <b-row class="my-2" v-show="!contract.winningBid">
             <b-col>
-				<b-list-group v-if="bidList">
-					<b-list-group-item v-for="bid in bidList" :key="bid.id">
-                        {{bid.value}} - by 
-                        <span v-if="bid.profile"> {{bid.profile.displayName}} </span>
-					</b-list-group-item>
-				</b-list-group>
+                <bid-list-component :contractId="id" 
+                                    :addSelect="true" 
+                                    @select="selectWinningBid">
+                </bid-list-component>
+            </b-col>
+        </b-row>
+
+        <b-row class="winnig-bid my-2" v-if="contract.winningBid">
+            <b-col>
+                <b-card title="Winning Bid" :subTitle="getSub(contract.winningBid)">
+                <b-row>
+                    <b-col>
+                        <span>By: </span>
+                        <h4 style="display:inline-block">
+                            <router-link :to="'/profile/' + contract.winningBid.profile.uid">
+                                {{contract.winningBid.profile.displayName}}
+                            </router-link>
+                        </h4>
+                    </b-col>
+                </b-row>
+                </b-card>
             </b-col>
         </b-row>
     </b-container>
@@ -63,22 +79,25 @@
 
 <script>
 import ContractStore from '../../repositories/contracts'
+import BidStore from '../../repositories/bids'
 import * as settings from '../../settings'
 import store from '../../repositories/contracts'
 import ContractForm from './contract-form.vue'
-import Bid from '../../models/bid'
+import Bid, {STATES} from '../../models/bid'
+
+import BidListComponent from '../bid/bid-list'
 
 export default {
     name : 'contract-details-component',
     props : ['id'],
     components : {
-        ContractForm
+        ContractForm,
+        BidListComponent
     },
     data : function() {
         return {
             contract : null,
             edits : false,
-            bidList : [],
             isUpdated : false,
             profileName : {}       
         }
@@ -88,8 +107,8 @@ export default {
             console.error("You not welcome here")
         }
         ContractStore.get(this.id).then( contract => {
+            console.info(contract)
             this.contract = contract
-            this.bidList = contract.bids
         })
 		ContractStore.Subscribe( (snap, prevChildKey) => {
 			this.updateContract(snap)
@@ -115,13 +134,9 @@ export default {
             })
         },
         updateContract(snap){
-            console.log(snap.key)
-            console.log(this.bidList)
+            console.warn(snap.key)
             if(snap.key == "currentBid"){
                 let b = Bid.fromFirebase(snap.val())
-                
-                this.bidList[b.id] = b
-
                 this.contract.currentBid = b
 
                 this.isUpdated = true
@@ -131,11 +146,17 @@ export default {
                 }, 2000);
             }
         },
-        getSub(){
-            if(this.contract.currentBid.value){
-                return 'Value ' + this.contract.currentBid.value
+        getSub(bid){
+            if(bid && bid.value){
+                return 'Value ' + bid.value
             }
             return 'Not yet placed'
+        },
+        selectWinningBid(bid){
+            bid.state = STATES.WINNING
+            this.contract.winningBid = bid
+            ContractStore.update(this.contract.id, this.contract)
+            BidStore.update(bid.id, bid)
         }
     } 
 }

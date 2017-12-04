@@ -56,7 +56,6 @@ import Contract from '../../models/contract'
 import * as Helpers from '../../helpers'
 import * as Settings from '../../settings'
 
-// import * as settings from '../../settings'
 export default {
 	name : 'contract-list-component',
 	data : function() {
@@ -107,6 +106,8 @@ export default {
 			contract.pushBid(b)
 
 			BidStore.update(b.id, b)
+			ContractStore.update(contract.id, contract)
+
 		},
 		updateContract(snap){
 			if(snap.exists()){ /** Handle deleted or removed contracts */
