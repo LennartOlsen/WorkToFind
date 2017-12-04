@@ -41,7 +41,6 @@ export default {
         return {
             contractList : [],
             bidList : [],
-
             profile : null
         }
     },
