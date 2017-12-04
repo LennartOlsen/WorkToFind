@@ -12,9 +12,11 @@
                             <b-col v-if="isAllowedToComplete()">
                                 <b-button
                                 variant="primary" 
-                                v-if="contract.winningBid && isAllowedToComplete()" 
+                                v-if="!isCompleted() && !hasCompleted()"
                                 @click="doComplete()">Complete</b-button>
-                                <p>Confirm that the contract has been completed</p>
+                                <p v-if="!hasCompleted() && !isCompleted()">Confirm that the contract has been completed</p>
+                                <p v-if="hasCompleted() && !isCompleted()">Waiting for the other peer to complete this contract</p>
+                                <p v-if="isCompleted()">This contract is completed</p>
                             </b-col>
                         </b-row>
                     </b-card-body>
@@ -182,6 +184,12 @@ export default {
         doComplete(){
            this.contract.doComplete(settings.getCurrentUser().uid)
            ContractStore.update(this.contract.id, this.contract)
+        },
+        isCompleted(){
+            return this.contract.isComplete()
+        },
+        hasCompleted(){
+            return this.contract.hasCompleted(settings.getCurrentUser().uid)
         }
     } 
 }
