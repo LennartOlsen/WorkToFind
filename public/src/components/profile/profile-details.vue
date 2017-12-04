@@ -24,7 +24,7 @@
         </b-card-footer>
     </b-card>
         <b-row v-if="edits">
-            <profile-form :profile="profile"></profile-form>
+            <profile-form :profile="profile" @updated="toggleEdit"></profile-form>
         </b-row>
             </b-col>
             <b-col cols="2" class="text-center">
@@ -85,6 +85,9 @@ export default {
                 }
             })
         },
+        updatedProfile(profile) {
+            console.log("skata", profile)
+        }
     } 
 }
 </script>

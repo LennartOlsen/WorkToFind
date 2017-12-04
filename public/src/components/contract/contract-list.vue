@@ -2,13 +2,6 @@
     <b-container fluid>
         <b-row>
             <b-col>
-<<<<<<< HEAD
-            	<ul class="todo-list">
-					<li v-for="contract in contracts" :key="contract.id">
-						<h1>{{contract.description}}</h1>
-					</li>
-				</ul>
-=======
 				<b-list-group>
 					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id">
 						<b-row>
@@ -49,16 +42,12 @@
 						</b-row>
 					</b-list-group-item>
 				</b-list-group>
->>>>>>> 8ab30d2cc8af76ca6448324ead65723d680ba8d0
 			</b-col>
         </b-row>
     </b-container>
 </template>
 
 <script>
-<<<<<<< HEAD
-import ContractStore from "../../repositories/contracts"
-=======
 import ContractStore from '../../repositories/contracts'
 import BidStore from '../../repositories/bids'
 import Profiles from '../../repositories/profiles'
@@ -68,22 +57,10 @@ import * as Helpers from '../../helpers'
 import * as Settings from '../../settings'
 
 // import * as settings from '../../settings'
->>>>>>> 8ab30d2cc8af76ca6448324ead65723d680ba8d0
 export default {
 	name : 'contract-list-component',
 	data : function() {
         return {
-<<<<<<< HEAD
-			contracts : null
-        }
-	},
-	mounted : function() {
-		console.log("i am here")
-		ContractStore.get().then(contracts=>{
-			console.log(contracts)
-			this.contracts = contracts
-		})
-=======
 			contractList: null,
 			error : [],
 			profileName: {},
@@ -148,7 +125,6 @@ export default {
 				}
 			}
 		}
->>>>>>> 8ab30d2cc8af76ca6448324ead65723d680ba8d0
 	}
 }
 </script>
