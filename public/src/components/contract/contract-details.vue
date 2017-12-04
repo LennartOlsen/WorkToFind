@@ -4,8 +4,19 @@
             <b-col>
                 <b-card no-body>
                     <b-card-body slot="header">
-                    <h4>Contract</h4>
-                    {{contract.label}}
+                        <b-row>
+                            <b-col>
+                                <h4>Contract</h4>
+                                {{contract.label}}
+                            </b-col>
+                            <b-col v-if="isAllowedToComplete()">
+                                <b-button
+                                variant="primary" 
+                                v-if="contract.winningBid && isAllowedToComplete()" 
+                                @click="doComplete()">Complete</b-button>
+                                <p>Confirm that the contract has been completed</p>
+                            </b-col>
+                        </b-row>
                     </b-card-body>
                     <b-list-group flush>
                         <b-list-group-item>Description: {{contract.description}}</b-list-group-item>
@@ -15,7 +26,7 @@
                         <b-list-group-item>Bid By : <span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-list-group-item>                    
                     </b-list-group>
                     <b-card-footer v-if="canEdit">
-                        <a  @click="toggleEdit"
+                        <a @click="toggleEdit"
                         class="card-link" style="cursor:default">Edit</a>
                         <a class="card-link" style="color:red;cursor:default">Delete</a>
                     </b-card-footer>
@@ -134,7 +145,6 @@ export default {
             })
         },
         updateContract(snap){
-            console.warn(snap.key)
             if(snap.key == "currentBid"){
                 let b = Bid.fromFirebase(snap.val())
                 this.contract.currentBid = b
@@ -153,10 +163,21 @@ export default {
             return 'Not yet placed'
         },
         selectWinningBid(bid){
+            if(bid.uid == this.contract.uid){
+                alert("No way Jose")
+                return;
+            }
             bid.state = STATES.WINNING
             this.contract.winningBid = bid
             ContractStore.update(this.contract.id, this.contract)
             BidStore.update(bid.id, bid)
+        },
+        isAllowedToComplete(){
+            return this.contract.canComplete(settings.getCurrentUser().uid)
+        },
+        doComplete(){
+           this.contract.doComplete(settings.getCurrentUser().uid)
+           ContractStore.update(this.contract.id, this.contract)
         }
     } 
 }

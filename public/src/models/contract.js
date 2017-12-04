@@ -16,6 +16,7 @@ export default class Contract {
      * @param {*} label 
      * @param {Bid} currentBid
      * @param {Bid} winningBid
+     * @param {Object<string, boolean>} completedBy
      */
     constructor(id,
         uid, 
@@ -28,7 +29,8 @@ export default class Contract {
         nextBid = null,
         label = null,
         currentBid = null,
-        winningBid = null){
+        winningBid = null,
+        completedBy = {}){
             
             if(id == null){
                 throw "Contract initialized with no id"
@@ -49,6 +51,8 @@ export default class Contract {
             this.deleteTime = deleteTime
             
             this.winningBid = winningBid
+
+            this.completedBy = completedBy
     }
 
     static fromFirebase(fb){
@@ -80,5 +84,23 @@ export default class Contract {
         this.currentBid = bid;
         
         return this
+    }
+    
+    canComplete(uid){
+        return this.uid == uid || this.winningBid.profile.uid == uid
+    }
+
+    hasCompleted(uid){
+        return this.canComplete(uid) && this.completedBy[uid]
+    }
+
+    doComplete(uid){
+        if(!this.hasCompleted(uid)){
+            this.completedBy[uid] = true
+        }
+    }
+    /** Dump test by now */
+    isComplete(){
+        return Object.keys(this.completedBy).length > 1
     }
 }
