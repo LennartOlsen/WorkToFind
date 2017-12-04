@@ -20,6 +20,22 @@ exports.createProfileInDB = functions.auth.user().onCreate(event => {
     })
 });
 
-exports.reactToNewBid = functions.database.ref('contracts/{contractId}/bids').onUpdate(event => {
-    let bid = event.data
+exports.reactToNewBid = functions.database.ref('bids/{bidId}').onWrite(event => {
+    let bidId = event.params.bidId
+
+    let contractId = event.data.val().contractId
+    let uid = event.data.val().profile.uid
+    let model = {}
+    model[bidId] = true
+    console.log("got bid", model, bidId)
+    return admin.database().ref("contractBidsIndex").child(contractId).update(model, function(error){
+        if(error){
+            console.error("got error contract bids", error)
+        } 
+        return admin.database().ref("profileBidsIndex").child(uid).update(model, function(error) {
+            if(error){
+                console.error("got error profile bids", error)
+            }
+        })
+    })
 })

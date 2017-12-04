@@ -1,5 +1,5 @@
 import BaseRepository from "./base";
-import Contract from "../models/contract";
+import Bid from "../models/bid";
 
 //@ts-check
 const KEY = "bids"
@@ -12,7 +12,7 @@ class Bids extends BaseRepository {
     /**
      * Get without id, returns all with ID returns just the one
      * @param {string} id The ID of the profile you want
-     * @returns {Promise<Contract>} the promise, make sure to handle errors
+     * @returns {Promise<Bid>} the promise, make sure to handle errors
      */
     get(id=null){
         if(!id){
@@ -24,12 +24,12 @@ class Bids extends BaseRepository {
     /**
      * 
      * @param {Promise<any>} promise 
-     * @returns {Promise<Contract>} 
+     * @returns {Promise<Bid>} 
      */
     unwrap(promise){
         return promise.then(snap => {
             if(snap.exists()){
-                return Contract.fromFirebase(snap.val())
+                return Bid.fromFirebase(snap.val())
             }
         })
     }
@@ -37,14 +37,14 @@ class Bids extends BaseRepository {
     /**
      * 
      * @param {Promise<any>} promise 
-     * @returns {Promise<Array<Contract>>} 
+     * @returns {Promise<Array<Bid>>} 
      */
     unwrapList(promise){
         return promise.then(snaps => {
             let list = new Array()
             snaps.forEach(snap => {
                 if(snap.exists()){
-                    list.push(Contract.fromFirebase(snap.val()))
+                    list.push(Bid.fromFirebase(snap.val()))
                 }
             })
             return list
@@ -55,14 +55,14 @@ class Bids extends BaseRepository {
     /**
      * Updates given value at existing location
      * @param {string} id
-     * @param {Contract} entity
+     * @param {Bid} entity
      * @returns {Promise<any>}
      */
     update(id, entity){
         this.removeEmpty(entity)
         entity.updateTime = Date.now()
         if(!id || id == ''){
-            throw("No id when updating contracts are not allowed")
+            throw("No id when updating Bids are not allowed")
         }
         return this.getReference(id).update(entity)
     }
