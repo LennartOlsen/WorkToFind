@@ -17,6 +17,7 @@
                                 <p v-if="!hasCompleted() && !isCompleted()">Confirm that the contract has been completed</p>
                                 <p v-if="hasCompleted() && !isCompleted()">Waiting for the other peer to complete this contract</p>
                                 <p v-if="isCompleted()">This contract is completed</p>
+                                <rating-form :contract="contract" ></rating-form> 
                             </b-col>
                         </b-row>
                     </b-card-body>
@@ -99,13 +100,15 @@ import store from '../../repositories/contracts'
 import ContractForm from './contract-form.vue'
 import Bid, {STATES} from '../../models/bid'
 import BidListComponent from '../bid/bid-list'
+import ratingForm from '../profile/rating'
 
 export default {
     name : 'contract-details-component',
     props : ['id'],
     components : {
         ContractForm,
-        BidListComponent
+        BidListComponent,
+        ratingForm
     },
     data : function() {
         return {
