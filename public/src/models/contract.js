@@ -14,6 +14,8 @@ export default class Contract {
      * @param {*} maxPrice 
      * @param {*} nextBid 
      * @param {*} label 
+     * @param {*} contractorHasRated
+     * @param {*} employeeHasRated
      * @param {Bid} currentBid
      * @param {Bid} winningBid
      * @param {Object<string, boolean>} completedBy
@@ -30,6 +32,8 @@ export default class Contract {
         label = null,
         currentBid = null,
         winningBid = null,
+        contractorHasRated = null,
+        employeeHasRated = null,
         completedBy = {}){
             
             if(id == null){
@@ -46,7 +50,8 @@ export default class Contract {
             this.nextBid = nextBid
             this.label = label
             this.currentBid = currentBid
-
+            this.contractorHasRated = contractorHasRated
+            this.employeeHasRated = employeeHasRated
             this.updateTime = updateTime
             this.deleteTime = deleteTime
             

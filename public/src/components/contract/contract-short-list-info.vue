@@ -16,6 +16,7 @@
                 <b-list-group >
                     <b-list-group-item v-for="bid in bidList" :key="bid.id">
                         <p>Bid value: {{ bid.value }} <img src="../../assets/check.png" v-if="bid.state == 'winning'"/></p>
+                        <router-link :to="'/contracts/' + bid.contractId">Go to Contract</router-link>
                     </b-list-group-item> 
                 </b-list-group>
             </b-col>
