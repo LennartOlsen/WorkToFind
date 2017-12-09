@@ -34,6 +34,16 @@ class Contracts extends BaseRepository {
         return super.getReference(id).child("bids").on(type, (snap, prevChildKey) => { cb(snap, prevChildKey) })
     }
 
+    SubscribeToNotifications(callback){
+       super.getReference().on("child_changed", function(snapshot) {
+            snapshot.ref.child("winningBid").on("child_added", function (winnerSnapshot) {
+                let addedWinner = winnerSnapshot.val();
+                let contract = snapshot.val();
+                callback(addedWinner, contract);
+            });
+        });
+    }
+
     /**
      * 
      * @param {Promise<any>} promise 

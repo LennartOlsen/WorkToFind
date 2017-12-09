@@ -23,13 +23,9 @@
       </b-navbar>
       <div id="main-content">
         <b-container fluid>
-          <b-row style="margin-top:2em; margin-right:0">
-                <b-col cols="2">
-                    <b-nav vertical>
-                        
-                    </b-nav>
-                </b-col>
-                <b-col cols="9">
+          <b-row style="margin:2em 0; margin-right:0">
+            <notification-component></notification-component>
+                <b-col cols="8" offset-md="2">
                     <router-view v-if="profile && !profile.isPristine()">
                     </router-view>
                     <template v-if="profile && profile.isPristine()">
@@ -49,11 +45,13 @@
 import * as settings from "./../settings";
 import ProfileStore from "../repositories/profiles";
 import ProfileFormComponent from "./profile/profile-form";
+import NotificationComponent from './notifications';
 
 export default {
   name : "app-container-component",
   components : {
-    ProfileFormComponent
+    ProfileFormComponent,
+    NotificationComponent
     },
   props : ["user"],
   data : function() {

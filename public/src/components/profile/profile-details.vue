@@ -19,7 +19,6 @@
         <b-card-footer>
             <a v-if="canEdit" @click="toggleEdit"
                class="card-link">Edit</a>
-            <a class="card-link" style="color: red">Delete</a>
             </b-card-footer>
         </b-card>
         <b-row v-if="edits">

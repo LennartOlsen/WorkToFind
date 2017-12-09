@@ -3,7 +3,7 @@
         <b-row>
             <b-col>
 				<b-list-group>
-					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id" v-if="contract.winningBid == null">
+					<b-list-group-item id="contracts-list" v-for="contract in contractList" :key="contract.id">
 						<b-row>
 							<b-card no-body style="width: 100%;">
         					<h4 slot="header">
@@ -25,10 +25,10 @@
 							<div slot="footer" v-if="profile && profile.uid != contract.uid && profile.type == 'EMPLOYEE'">
 								<b-row>
 									<b-col cols="5" offset-md="4">
-										<b-form-input id="next_bid" v-model.number="contract.nextBid" type="number"></b-form-input>
+										<b-form-input id="next_bid" v-on:change="error[contract.id]=false" v-model.number="contract.nextBid" type="number"></b-form-input>
 									</b-col>
 									<b-col cols="2">
-										<b-button variant="primary" @click="doBid(contract)">Bid</b-button>
+										<b-button variant="primary" :disabled="contract.winningBid != null" @click="doBid(contract)">Bid</b-button>
 										<b-button variant="secondary" :to="'/contracts/' + contract.id" style="color:white;cursor:default">View</b-button>
 									</b-col>
 								</b-row>

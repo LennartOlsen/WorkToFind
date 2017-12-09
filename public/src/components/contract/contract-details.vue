@@ -30,7 +30,6 @@
                     <b-card-footer v-if="canEdit">
                         <a @click="toggleEdit"
                         class="card-link" style="cursor:default">Edit</a>
-                        <a class="card-link" style="color:red;cursor:default">Delete</a>
                     </b-card-footer>
                 </b-card>
             </b-col>
