@@ -17,7 +17,7 @@
                                 <p v-if="!hasCompleted() && !isCompleted()">Confirm that the contract has been completed</p>
                                 <p v-if="hasCompleted() && !isCompleted()">Waiting for the other peer to complete this contract</p>
                                 <p v-if="isCompleted()">This contract is completed</p>
-                                <rating-form :contract="contract" ></rating-form> 
+                                <rating-form :contract="contract" v-if="isCompleted()" ></rating-form> 
                             </b-col>
                         </b-row>
                     </b-card-body>
