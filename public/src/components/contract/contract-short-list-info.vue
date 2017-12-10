@@ -13,10 +13,17 @@
         <b-row v-if="profile && profile.type == 'EMPLOYEE'">
             <b-col>
                 <h3>Bid list</h3>
-                <b-list-group >
-                    <b-list-group-item v-for="bid in bidList" :key="bid.id">
-                        <p>Bid value: {{ bid.value }} <img src="../../assets/check.png" v-if="bid.state == 'winning'"/></p>
-                        <router-link :to="'/contracts/' + bid.contractId">Go to Contract</router-link>
+                <b-list-group>
+                    <b-list-group-item v-if="ready" v-for="contract in employeeContractList" :key="contract.id">
+                        <p>{{ contract.label }}
+                            <img src="../../assets/check.png" v-if="contract.winningBid && contract.winningBid.uid == profile.uid"/>
+                        </p>
+                        <h6> Bids : </h6>
+                        <span v-for="bid in contract.bids" :key="bid.id">
+                            {{bid.value}} ->
+                        </span>
+                        </br>
+                        <router-link :to="'/contracts/' + contract.id">Go to Contract</router-link>
                     </b-list-group-item> 
                 </b-list-group>
             </b-col>
@@ -42,20 +49,17 @@ export default {
         return {
             contractList : [],
             bidList : [],
-            profile : null
+            employeeContractList : [],
+            profile : null,
+            ready : false
         }
     },
     mounted : function() {
         Profiles.get(Settings.getCurrentUser().uid).then( profile => {
 			this.profile = profile
 		})
-        if(this.id) {
-            // console.log("Not for you")
-            // console.log(this.id)
-        }
         ContractStore.getByUID(this.id).then ( contractList => {
             this.contractList = contractList;
-            console.log(this.contractList)
         })
         
         ProfileBidsStore.get(Settings.getCurrentUser().uid).then(idList => {
@@ -63,6 +67,7 @@ export default {
                 for(let id in idList.bids){
                     this.fetchBid(id)
                 }
+                this.ready = true
             } else {
                 this.error = "No bids found for contract"
             }
@@ -71,20 +76,37 @@ export default {
     methods: {
         fetchBid(id){
             BidsStore.get(id).then(bid => {
-                this.bidList.unshift(bid)
+                ContractStore.get(bid.contractId).then(contract => {
+                    if(contract){
+                        this.addContractToList(contract, bid)
+                    }
+                    console.log(this.employeeContractList)
+                })
             })
         },
         getContractByBid(bid){
             ContractStore.get(bid.contractId).then( contract => {
                 console.log(contract)
-                return
             })
         },
         test(bid){
             ContractStore.get(bid.contractId).then( contract => {
                 this.contractList[contract.id] = contract
             })
-            return "TEST"
+        },
+        addContractToList(contract, bid){
+            let found = false
+            for (const c of this.employeeContractList) {
+                if(c.id == bid.contractId){
+                    c.bids.unshift(bid)
+                    found = true
+                }
+            }
+            if(!found){
+                contract.bids = []
+                contract.bids.unshift(bid)
+                this.employeeContractList.unshift(contract)
+            }
         }
     }
   

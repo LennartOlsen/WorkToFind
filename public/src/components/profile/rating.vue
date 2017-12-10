@@ -2,14 +2,19 @@
     <b-container fluid>
         <b-row>
             <div id="star-rating" v-if="isRatingAllowed() == null">
-                <img src="../../assets/star.png" @click="addRatingToUser(1)" />
-                <img src="../../assets/star.png" @click="addRatingToUser(2)" />
-                <img src="../../assets/star.png" @click="addRatingToUser(3)" />
-                <img src="../../assets/star.png" @click="addRatingToUser(4)" />
-                <img src="../../assets/star.png" @click="addRatingToUser(5)" />
+                <img class="star" src="../../assets/star.png" @click="addRatingToUser(5)" />
+                <img class="star" src="../../assets/star.png" @click="addRatingToUser(4)" />
+                <img class="star" src="../../assets/star.png" @click="addRatingToUser(3)" />
+                <img class="star" src="../../assets/star.png" @click="addRatingToUser(2)" />
+                <img class="star" src="../../assets/star.png" @click="addRatingToUser(1)" />
             </div>
-            <div v-if="isRatingAllowed() != null">
+            <div id="star-rating-rated" v-if="isRatingAllowed() != null">
                 <h3>You rated {{isRatingAllowed()}} stars</h3>
+                <img class="star" src="../../assets/star.png" :class="{'rated' : isRatingAllowed() == 5}" />
+                <img class="star" src="../../assets/star.png" :class="{'rated' : isRatingAllowed() == 4}" />
+                <img class="star" src="../../assets/star.png" :class="{'rated' : isRatingAllowed() == 3}" />
+                <img class="star" src="../../assets/star.png" :class="{'rated' : isRatingAllowed() == 2}" />
+                <img class="star" src="../../assets/star.png" :class="{'rated' : isRatingAllowed() == 1}" />
             </div>
         </b-row>
     </b-container>
@@ -91,9 +96,30 @@ export default {
 }
 </script>
 
-<style>
-#star-rating img:hover{
-    cursor: pointer;
+<style scoped>
+img.star {
+    cursor:pointer;
+    filter:grayscale(100%);
+    -webkit-transition: filter 500ms;
+    -moz-transition: filter 500ms;
+    transition: filter 500ms;
+}
+#star-rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+}
+#star-rating img:hover,
+#star-rating img:hover ~ img {
+    filter:none;
+}
+
+#star-rating-rated {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+}
+#star-rating-rated img.rated,
+#star-rating-rated img.rated ~ img {
+    filter:none;
 }
 
 </style>
