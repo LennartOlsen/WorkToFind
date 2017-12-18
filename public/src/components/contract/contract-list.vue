@@ -11,7 +11,7 @@
 								<router-link :to="'/profile/'+ contract.uid" style="font-size:15px;color:grey"> {{profileName[contract.uid]}}</router-link>
 							</h4>
 							<b-card-body>
-							 {{contract.description}}>
+							 {{contract.description}}
 							</b-card-body>
 							<b-card-body>
 								<b-row>
