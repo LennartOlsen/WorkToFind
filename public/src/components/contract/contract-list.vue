@@ -7,11 +7,11 @@
 						<b-row>
 							<b-card no-body style="width: 100%;">
         					<h4 slot="header">
-								<router-link :to="'/contracts/' + contract.id">{{contract.label}}</router-link><br>
+								<router-link :to="'/contracts/' + contract.id">{{contract.label}}</router-link><span class="closed" v-if="contract.winningBid"> Closed</span><br>
 								<router-link :to="'/profile/'+ contract.uid" style="font-size:15px;color:grey"> {{profileName[contract.uid]}}</router-link>
 							</h4>
 							<b-card-body>
-							 {{contract.description}}
+							 {{contract.description}}>
 							</b-card-body>
 							<b-card-body>
 								<b-row>
@@ -138,5 +138,9 @@ export default {
 <style scoped>
 	#contracts-list{
 		border: 0px
+	}
+	.closed {
+		font-size:0.45em;
+		color:red;
 	}
 </style>

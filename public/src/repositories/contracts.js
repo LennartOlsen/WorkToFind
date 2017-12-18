@@ -17,7 +17,7 @@ class Contracts extends BaseRepository {
      */
     get(id=null){
         if(!id){
-            return this.unwrapList(super.getReference().once('value'))
+            return this.unwrapList(super.getReference().orderByChild("date").limitToLast(5).once('value'))
         }
         return this.unwrap(super.getReference(id).once('value'))
     }
