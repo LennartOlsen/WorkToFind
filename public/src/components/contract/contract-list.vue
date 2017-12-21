@@ -22,7 +22,7 @@
 									<b-col><span class="boldie">Winner </span><br/><span v-if="contract.currentBid && contract.currentBid.profile">{{contract.currentBid.profile.displayName}}</span></b-col>
 								</b-row>
 							</b-card-body>
-							<div slot="footer" v-if="profile && profile.uid != contract.uid && profile.type == 'EMPLOYEE'">
+							<div slot="footer" v-if="!contract.winningBid">
 								<b-row>
 									<b-col cols="5" offset-md="4">
 										<b-form-input id="next_bid" v-on:change="error[contract.id]=false" v-model.number="contract.nextBid" type="number"></b-form-input>
